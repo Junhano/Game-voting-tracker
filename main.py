@@ -1,5 +1,5 @@
 def print_menu():
-    print('r is represent, is to showing the vote and people in the list \nan is add name \nas is add score, only 1 score \nass is add scores, parameter is a string \nc is clean, don\'t use it \nfl final list, decide vote \nre is report, report and record into a text file \ninit is to reread the file \nnl is to people are going to vote for \nq is quit\n')
+    print('r is represent, is to showing the vote and people in the list \naec is add everyone except that person \nd is delete single person 1 vote \nan is add name \nass is add scores, parameter is a string \nc is clean, don\'t use it \nfl final list, decide vote \nre is report, report and record into a text file \ninit is to reread the file \nnl is to people are going to vote for \nq is quit\n')
 class TrackingVote:
     def __init__(self,file = 'tracking.txt'):
         self.name_dict = dict()
@@ -27,11 +27,19 @@ class TrackingVote:
                     if k.upper() == i.upper():
                         self.name_dict[k] += 1
             self.report()
+    def delete_score(self,name):
+        if name in self.name_dict.keys():
+            self.name_dict[name]-= 1
     def add_score(self,name):
         if name in self.name_dict.keys():
             self.name_dict[name] += 1
     def name_list(self):
         return ','.join(list(self.name_dict.keys()))
+    
+    def add_everyone_except(self,name):
+        for k in self.name_dict.keys():
+            if k.upper() != name.upper():
+                self.name_dict[k] += 1
     def final_list(self):
         return_list = []
         count = 0
@@ -61,9 +69,6 @@ if __name__ == '__main__':
         elif input1 == 'an':
             input2 = input('Add name, can be a string of name that separate by comma: ')
             c.add_name(input2)
-        elif input1 == 'as':
-            input2 = input('Add only 1 score: ')
-            c.add_score(input2)
         elif input1 == 'ass':
             input2 = input('Please add the string and press enter: ')
             c.add_scores(input2)
@@ -71,12 +76,18 @@ if __name__ == '__main__':
             input2 = input('Are you sure? Y/N')
             if input2 == 'Y':
                 c.clean()
+        elif input1 == 'd':
+            input2 = input('enter a name:')
+            c.delete_score(input2)
         elif input1 == 'fl':
             print(c.final_list())
         elif input1 == 'nl':
             print(c.name_list())
         elif input1 == 're':
             c.report()
+        elif input1 == 'aec':
+            input2 = input('Enter a name: ')
+            c.add_everyone_except(input2)
         elif input1 == 'init':
             c = TrackingVote()
         elif input1 == 'help':
